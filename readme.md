@@ -63,5 +63,116 @@ Executive actions are saved in the form of function pointers in a list of functi
 which are marked with the function pointer array index, so that the function pointer corresponding to 
 the array index can be obtained quickly.
 
+### 1.3 Control protocol
 
+Frame format to send out commands：
+
+<table>
+    <tr>
+        <th rowspan="1">Board ID</th>
+        <th colspan="8">data fields</th>
+    </tr>
+    <tr>
+        <th rowspan="4">pre-defined</th>
+        <tr>
+            <td>Byte0</td>
+            <td>Byte1</td>
+            <td>Byte2</td>
+            <td>Byte3</td>
+            <td>Byte4</td>
+            <td>Byte5</td>
+            <td>Byte6</td>
+            <td>Byte7</td>
+        </tr>
+        <tr>
+            <td>Group ID</td>
+            <td>Func code</td>
+            <td>Action type</td>
+            <td>action number</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+        </tr>
+        <tr>
+            <td>pre-defined</td>
+            <td>0xCA</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tr>
+</table>
+
+If the commands be received correctly, the bord of the device end will change the 
+Func code to be 0xCB, and all other fields will be kept as original ones to send back.
+The format is as follows:
+
+<table>
+    <tr>
+        <th rowspan="1">Board ID</th>
+        <th colspan="8">data fields</th>
+    </tr>
+    <tr>
+        <th rowspan="4">pre-defined</th>
+        <tr>
+            <td>Byte0</td>
+            <td>Byte1</td>
+            <td>Byte2</td>
+            <td>Byte3</td>
+            <td>Byte4</td>
+            <td>Byte5</td>
+            <td>Byte6</td>
+            <td>Byte7</td>
+        </tr>
+        <tr>
+            <td>Group ID</td>
+            <td>Func code</td>
+            <td>Action type</td>
+            <td>action number</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+        </tr>
+        <tr>
+            <td>pre-defined</td>
+            <td>0xCB</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tr>
+</table>
+
+The action types are currently include 3 types:
+* real time action —— 0x00
+* synchronous action —— 0x01
+* normal action —— 0x02
+
+### 1.4 An action example
+
+This section starts with the simplest control of a single solenoid valve opening and closing, 
+giving an example of a cycle test to control 8 sets of solenoid valves to open or to close.
+
+The interface message response function `void CtestingDevicesDlg::OnBnClickedMfcbtn1 ( )` 
+sends control action command to the solenoid valve numbered 1, opening or closing the solenoid 
+valve. The status of the solenoid valve is sent by the heartbeat package that controls the 
+circuit board. The current state of each devices on the board is periodically sent when the 
+control board is connected to the CAN network.
+
+First, add a control board object to the control center m_pMachine so that the control board 
+device can interact with the control center to exchange information. Add an object to the function 
+`void CMachineProofing::createModules ( )` that pushes the end control board 
+`CBoardPushing`. `CBoardPushing:::Testing ( int )` is used to test the functionality of 
+the board, testing a function by sending instructions to the board, which receives instructions 
+and gives feedback.
+
+The next step is to add sub-devices to `CBoardPushing`, which is done in the constructor.
 

@@ -52,3 +52,111 @@ Yabee 平板印花智能定位系统设备端资源站点
 从而可以迅速获得动作编号所对应的函数指针。
 
 
+### 1.3 控制协议
+
+发送指令格式：
+
+<table>
+    <tr>
+        <th rowspan="1">Board ID</th>
+        <th colspan="8">数据域</th>
+    </tr>
+    <tr>
+        <th rowspan="4">预设</th>
+        <tr>
+            <td>Byte0</td>
+            <td>Byte1</td>
+            <td>Byte2</td>
+            <td>Byte3</td>
+            <td>Byte4</td>
+            <td>Byte5</td>
+            <td>Byte6</td>
+            <td>Byte7</td>
+        </tr>
+        <tr>
+            <td>组号</td>
+            <td>功能码</td>
+            <td>动作类型</td>
+            <td>动作号</td>
+            <td>数据</td>
+            <td>数据</td>
+            <td>数据</td>
+            <td>数据</td>
+        </tr>
+        <tr>
+            <td>预设</td>
+            <td>0xCA</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tr>
+</table>
+
+若指令被正确接收，功能码改变为 0xCB，其它报文由接受到指令的控制板原文返回。格式如下：
+
+<table>
+    <tr>
+        <th rowspan="1">Board ID</th>
+        <th colspan="8">数据域</th>
+    </tr>
+    <tr>
+        <th rowspan="4">预设</th>
+        <tr>
+            <td>Byte0</td>
+            <td>Byte1</td>
+            <td>Byte2</td>
+            <td>Byte3</td>
+            <td>Byte4</td>
+            <td>Byte5</td>
+            <td>Byte6</td>
+            <td>Byte7</td>
+        </tr>
+        <tr>
+            <td>组号</td>
+            <td>功能码</td>
+            <td>动作类型</td>
+            <td>动作号</td>
+            <td>数据</td>
+            <td>数据</td>
+            <td>数据</td>
+            <td>数据</td>
+        </tr>
+        <tr>
+            <td>预设</td>
+            <td>0xCB</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tr>
+</table>
+
+动作类型表：
+* 实时动作 —— 0x00
+* 时钟动作 —— 0x01
+* 普通动作 —— 0x02
+
+
+### 1.4 An action example
+
+本节从一个最简单的控制单个电磁阀开闭入手，给出一个循环测试控制8组电磁阀开闭的例子。
+
+界面消息响应 `void CtestingDevicesDlg::OnBnClickedMfcbtn1 ( )` 会向编号为 1 的电磁阀发送控制动作，
+打开或关闭该电磁阀。电磁阀的状态由控制电路板的心跳包发送过来。
+控制电路板连接到 CAN 网后会定期发送电路板上各 devices 的当前状态。
+
+首先在控制中心向`m_pMachine`中增加一个控制电路板对象，这样该控制电路板设备才能与控制中心进行信息交互。
+在函数`void CMachineProofing::createModules ( )`中增加一个推进端控制板`CBoardPushing`的对象。
+`CBoardPushing::Testing ( int )`用于对该电路板的功能进行测试，测试某个功能即发送相应的指令给电路板，
+电路板收到指令后进行反馈。
+
+下一步给`CBoardPushing`增加子设备，这个在构造函数中完成。
+
+
