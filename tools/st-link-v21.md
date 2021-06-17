@@ -17,8 +17,14 @@ interface; SWD, SWIM, serial port
 First upgrade the firmware of the simulator, please refer to 
 <https://www.st.com/en/development-tools/stsw-link007.html#documentation>.
 
-具体过程参见
+硬件的连接方法具体过程参见
 [使用 ST-LINK/V2-1 将程序下载到电路板](https://gitee.com/industry-ai/embedded-programming-windows/blob/master/readme.md#3-使用-st-linkv2-1-将程序下载到电路板)
 
+连接完成后上电将编译好的 bin 文件下载到板中，方法有很多种。
+如果拖拽操作下载不成功，或者粘贴操作不成功，可以从官网下载 STM32 ST-LINK Utility 安装后使用。
+
+![ST-LINK Utility](pix/utility.PNG)
+
+具体操作参见<https://www.cnblogs.com/pudonglin/p/14216141.html>
 
 

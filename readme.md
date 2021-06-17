@@ -20,6 +20,11 @@ Maintaining by: Dr. Jicheng Hu
 
 ## 1 On-board Firmware
 
+Here we only talk about software associated part.
+There are many ways to download and simulate debugging, and here in this project we chose 
+the cheapest emulator ST-LINK/V2.1. For details please see 
+[Debugging and downloading via ST-LINK/V2-1](tools/st-link-v21.md)
+
 ### 1.1 Executive actions
 
 The most important aspect of on-board firmware is the receiving and parsing procedure
