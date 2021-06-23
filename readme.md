@@ -18,6 +18,9 @@ Automatic Locating System for Flat Printing Pipeline, supported by Yabee tech Co
 
 Maintaining by: Dr. Jicheng Hu
 
+For a review of the whole system, please see 
+"[Overview of the Whole System](system/overview.md)".
+
 ## 1 On-board Firmware
 
 Here we only talk about software associated part.

@@ -1,7 +1,6 @@
-# Overview of the Dev Environment of the Whole System
+# 系统开发环境综述
 
-Here in this page we give a review of the development environment on the device side, 
-so that developers can have an overview of the entire system.
+这里我们对设备端的开发环境做一个综述，方便开发者对全系统有一个较高视野的了解。
 
 ## Need-to-Know Things about the Entire System
 
